@@ -13,7 +13,6 @@ from recipes.forms import RatingForm
 #     RecipeForm = None
 #     Recipe = None
 
-from recipes.forms import RecipeForm
 from recipes.models import Recipe
 
 
@@ -49,8 +48,12 @@ class RecipeDetailView(DetailView):
 class RecipeCreateView(LoginRequiredMixin, CreateView):
     model = Recipe
     template_name = "recipes/new.html"
-    fields = ["name", "author", "description", "image"]
+    fields = ["name", "description", "image"]
     success_url = reverse_lazy("recipes_list")
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 
 class RecipeUpdateView(LoginRequiredMixin, UpdateView):
