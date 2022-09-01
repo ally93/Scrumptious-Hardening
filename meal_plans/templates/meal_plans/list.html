@@ -22,10 +22,10 @@
 
 {% block content %}
   <main class="recipe-grid">
-    {% for recipe in recipe_list %}
+    {% for meal in mealplan_list %}
       <div class="recipe-card">
         <h2 class="recipe-card-title">
-          <a href="{% url 'recipe_detail' recipe.pk %}">{{ recipe.name }}</a>
+          <a href="{% url 'meal_plan_detail' meal.pk %}">{{ meal.name }}</a>
         </h2>
         <p class="recipe-card-date">{{ recipe.updated }}</p>
       </div>
