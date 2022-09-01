@@ -33,14 +33,23 @@ class MealPlanDetailView(DetailView):
     model = MealPlan
     template_name = "meal_plans/detail.html"
 
+    def get_queryset(self):
+        return MealPlan.objects.filter(owner=self.request.user)
+
 class MealPlanUpdateView(LoginRequiredMixin, UpdateView):
     model = MealPlan
     template_name = "meal_plans/edit.html"
     fields = ["name", "date", "owner", "recipes"]
     success_url = reverse_lazy("meal_plan_list")
 
+    def get_queryset(self):
+        return MealPlan.objects.filter(owner=self.request.user)
+
 
 class MealPlanDeleteView(LoginRequiredMixin, DeleteView):
     model = MealPlan
     template_name = "meal_plans/delete.html"
     success_url = reverse_lazy("meal_plan_list")
+
+    def get_queryset(self):
+        return MealPlan.objects.filter(owner=self.request.user)
