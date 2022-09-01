@@ -1,8 +1,4 @@
-{% extends 'base.html' %} 
-{% load static %}
-{% load markdownify %}
-
-
+{% extends 'base.html' %} {% load static %} {% load markdownify %} 
 {% block content %}
   <main class="recipe-detail">
     <div>
@@ -10,14 +6,11 @@
       <a href="{% url 'recipe_delete' recipe.id %}">Delete</a>
     </div>
     {% if recipe.image %}
-      <img src="{{ recipe.image }}" class="pull-right">
+    <img src="{{ recipe.image }}" class="pull-right" />
     {% endif %}
     <h1>{{ recipe.name }}</h1>
     <h2>by: {{ recipe.author | default_if_none:"Unknown" }}</h2>
-    <p>
-      Created on {{ recipe.created }} |
-      Updated on {{ recipe.updated }}
-    </p>
+    <p>Created on {{ recipe.created }} | Updated on {{ recipe.updated }}</p>
     <form method="post" action="{% url 'recipe_rating' recipe.id %}">
       {% csrf_token %}
       <div class="rating-form-grid">
@@ -37,19 +30,32 @@
       </thead>
       <tbody>
         {% for ingredient in recipe.ingredients.all %}
-          <tr>
-            <td>{{ ingredient.amount }}</td>
-            <td>{{ ingredient.measure.name }}</td>
-            <td>{{ ingredient.food.name }}</td>
-          </tr>
+        <tr>
+          <td>{{ ingredient.amount }}</td>
+          <td>{{ ingredient.measure.name }}</td>
+          <td>{{ ingredient.food.name }}</td>
+          <td>
+            <form method="POST" action="{% url 'shopping_item_create' %}">
+              {% csrf_token %}
+              <input
+                type="hidden"
+                name="ingredient_id"
+                value={{ ingredient.id }}
+              />
+              <button>+ shopping list</button>
+            </form>
+          </td>
+        </tr>
         {% endfor %}
       </tbody>
     </table>
     <h2>Steps</h2>
     <ol>
       {% for step in recipe.steps.all %}
-        <li>{{ step.directions }}</li>
+      <li>{{ step.directions }}</li>
       {% endfor %}
     </ol>
   </main>
 {% endblock content %}
+  
+  
