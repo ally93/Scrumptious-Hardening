@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -23,10 +23,23 @@ class MealPlanCreateView(LoginRequiredMixin, CreateView):
     template_name = "meal_plans/new.html"
     fields = ["name", "date", "recipes"]
     success_url = reverse_lazy("meal_plan_list")
-
+    # customization of saving the form
     def form_valid(self, form):
-        form.instance.owner = self.request.user
-        return super().form_valid(form)
+        # save the meal plan BUT do not put it in the
+        # database(get the instances from form but only in memory not in database)
+        plan = form.save(commit=False)
+        # assign the owner to the meal plan
+        plan.owner = self.request.user
+        # now save it to the database
+        plan.save()
+        # save all of the m2m relationships
+        form.save_m2m()
+        # redirecting to the detail page for meal plan
+        return redirect("meal_plan_detail", pk=plan.id)
+
+    # def form_valid(self, form):
+    #     form.instance.author = self.request.user
+    #     return super().form_valid(form)
 
 
 class MealPlanDetailView(DetailView):
@@ -35,6 +48,7 @@ class MealPlanDetailView(DetailView):
 
     def get_queryset(self):
         return MealPlan.objects.filter(owner=self.request.user)
+
 
 class MealPlanUpdateView(LoginRequiredMixin, UpdateView):
     model = MealPlan
