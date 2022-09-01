@@ -13,5 +13,6 @@ class MealPlan(models.Model):
         on_delete=models.CASCADE,
         null=True,
     )
-    recipes = models.ManyToManyField("recipes.Recipe", related_name="meal_plans")
-    
+    recipes = models.ManyToManyField(
+        "recipes.Recipe", related_name="meal_plans"
+    )
