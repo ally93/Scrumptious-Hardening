@@ -8,6 +8,7 @@ from recipes.views import (
     RecipeListView,
     log_rating,
     create_shopping_item,
+    ShoppingItemListView,
 )
 
 urlpatterns = [
@@ -21,5 +22,10 @@ urlpatterns = [
         "shopping_items/create/",
         create_shopping_item,
         name="shopping_item_create",
+    ),
+    path(
+        "shopping_items/",
+        ShoppingItemListView.as_view(),
+        name="shopping_item_list",
     ),
 ]

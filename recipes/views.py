@@ -90,3 +90,10 @@ def create_shopping_item(request):
     except IntegrityError:
         pass
     return redirect("recipe_detail", pk=ingredient.recipe.id)
+
+class ShoppingItemListView(LoginRequiredMixin, ListView):
+    model = ShoppingItem
+    template_name = "shopping_items/list.html"
+
+    def get_queryset(self):
+        return ShoppingItem.objects.filter(user=self.request.user)
