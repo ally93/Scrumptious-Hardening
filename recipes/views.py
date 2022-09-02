@@ -97,3 +97,7 @@ class ShoppingItemListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return ShoppingItem.objects.filter(user=self.request.user)
+
+def delete_all_shopping_items(request):
+    ShoppingItem.objects.filter(user=request.user).delete()
+    return redirect("shopping_item_list")
