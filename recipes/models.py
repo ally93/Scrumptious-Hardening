@@ -88,7 +88,6 @@ class ShoppingItem(models.Model):
         related_name="shoppingitems",
         on_delete=models.CASCADE,
         null=True,
-        unique=True,
     )
     food_item = models.ForeignKey(
         "FoodItem", on_delete=models.PROTECT, unique=True

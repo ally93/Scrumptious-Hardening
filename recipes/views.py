@@ -44,6 +44,12 @@ class RecipeDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["rating_form"] = RatingForm()
+
+        foods = []
+        for item in self.request.user.shoppingitems.all():
+            foods.append(item.food_item)
+
+        context["food_in_shopping_list"] = foods
         return context
 
 
@@ -91,12 +97,14 @@ def create_shopping_item(request):
         pass
     return redirect("recipe_detail", pk=ingredient.recipe.id)
 
+
 class ShoppingItemListView(LoginRequiredMixin, ListView):
     model = ShoppingItem
     template_name = "shopping_items/list.html"
 
     def get_queryset(self):
         return ShoppingItem.objects.filter(user=self.request.user)
+
 
 def delete_all_shopping_items(request):
     ShoppingItem.objects.filter(user=request.user).delete()
