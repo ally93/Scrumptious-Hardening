@@ -4,8 +4,6 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 from recipes.forms import RatingForm
-
-from recipes.forms import RecipeForm
 from recipes.models import Recipe
 
 
