@@ -7,8 +7,13 @@
         <h2 class="recipe-card-title">
           <a href="{% url 'meal_plan_detail' mealplan.pk %}">{{ mealplan.name }}</a>
         </h2>
-        {% comment %} <p class="recipe-card-date">{{ recipe.updated }}</p> {% endcomment %}
+        {% for recipe in mealplan.recipes.all %}
+          <p>
+            <a href="{% url 'recipe_detail' recipe.pk %}">{{ recipe.name }}</a>
+          </p>
+        {% endfor %}
       </div>
+      
     {% endfor %}
   </main>
 {% endblock content %}
