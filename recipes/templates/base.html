@@ -23,6 +23,9 @@
           <li>
             <a href="{% url 'recipe_new' %}">Write a recipe</a>
           </li>
+          <li>
+            <a href="{% url 'meal_plan_list' %}">Meal Plans</a>
+          </li>
           {% if user.is_staff %}
             <li>
               <a href="{% url 'admin:index' %}">Admin</a>
