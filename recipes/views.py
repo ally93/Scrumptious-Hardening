@@ -23,31 +23,6 @@ def log_rating(request, recipe_id):
         return redirect("recipes_list")
 
 
-@require_http_methods(["POST"])
-def create_shopping_item(request):
-    # get ingredient id from post request
-    ingredient_id = request.POST.get("ingredient_id")
-    ingredient = Ingredient.objects.get(id=ingredient_id)
-    # get user id
-    requested_user = request.user
-
-    try:
-        # create shopping list item
-        ShoppingItem.objects.create(
-            user=requested_user, food_item=ingredient.food
-        )
-    except IntegrityError:
-        pass
-    # redirect to current recipe page-which we get from the request
-    return redirect("recipe_detail", pk=ingredient.recipe.id)
-
-
-@require_http_methods(["POST"])
-def delete_shopping_item(request):
-    ShoppingItem.objects.filter(user=request.user).delete()
-    return redirect("shoppingitems_list")
-
-
 class RecipeListView(ListView):
     model = Recipe
     template_name = "recipes/list.html"
@@ -67,7 +42,6 @@ class RecipeDetailView(DetailView):
             shopping_list.append(item.food_item)
         context["fooditems"] = shopping_list
         return context
-
 
 
 class RecipeCreateView(LoginRequiredMixin, CreateView):
@@ -101,3 +75,28 @@ class ShoppingItemListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return ShoppingItem.objects.filter(user=self.request.user)
+
+
+@require_http_methods(["POST"])
+def create_shopping_item(request):
+    # get ingredient id from post request
+    ingredient_id = request.POST.get("ingredient_id")
+    ingredient = Ingredient.objects.get(id=ingredient_id)
+    # get user id
+    requested_user = request.user
+
+    try:
+        # create shopping list item
+        ShoppingItem.objects.create(
+            user=requested_user, food_item=ingredient.food
+        )
+    except IntegrityError:
+        pass
+    # redirect to current recipe page-which we get from the request
+    return redirect("recipe_detail", pk=ingredient.recipe.id)
+
+
+@require_http_methods(["POST"])
+def delete_shopping_item(request):
+    ShoppingItem.objects.filter(user=request.user).delete()
+    return redirect("shoppingitems_list")
