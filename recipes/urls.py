@@ -8,6 +8,8 @@ from recipes.views import (
     RecipeDetailView,
     RecipeListView,
     ShoppingItemListView,
+    create_shopping_item,
+    delete_shopping_item,
 )
 
 urlpatterns = [
@@ -22,4 +24,14 @@ urlpatterns = [
         ShoppingItemListView.as_view(),
         name="shoppingitems_list",
     ),
+    path(
+        "shopping_items/create/",
+        create_shopping_item,
+        name="shoppingitems_create",
+    ),
+    path(
+        "shopping_items/delete/",
+        delete_shopping_item,
+        name="shoppingitems_delete",
+    )
 ]

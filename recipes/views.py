@@ -27,7 +27,7 @@ def log_rating(request, recipe_id):
 def create_shopping_item(request):
     # get ingredient id from post request
     ingredient_id = request.POST.get("ingredient_id")
-    ingredient = Ingredient.objects.all(id=ingredient_id)
+    ingredient = Ingredient.objects.get(id=ingredient_id)
     # get user id
     requested_user = request.user
 
@@ -40,6 +40,12 @@ def create_shopping_item(request):
         pass
     # redirect to current recipe page-which we get from the request
     return redirect("recipe_detail", pk=ingredient.recipe.id)
+
+
+@require_http_methods(["POST"])
+def delete_shopping_item(request):
+    ShoppingItem.objects.filter(user=request.user).delete()
+    return redirect("shoppingitems_list")
 
 
 class RecipeListView(ListView):
@@ -55,7 +61,13 @@ class RecipeDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["rating_form"] = RatingForm()
+
+        shopping_list = []
+        for item in self.request.user.shoppingitems.all():
+            shopping_list.append(item.food_item)
+        context["fooditems"] = shopping_list
         return context
+
 
 
 class RecipeCreateView(LoginRequiredMixin, CreateView):
@@ -89,31 +101,3 @@ class ShoppingItemListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return ShoppingItem.objects.filter(user=self.request.user)
-
-
-# def create_shopping_item(request):
-#     # Get the value for the "ingredient_id" from the
-#     # request.POST dictionary using the "get" method
-
-#     # Get the specific ingredient from the Ingredient model
-#     # using the code
-#     # Ingredient.objects.get(id=the value from the dictionary)
-
-#     # Get the current user which is stored in request.user
-
-#     try:
-#         # Create the new shopping item in the database
-#         # using ShoppingItem.objects.create(
-#         #   food_item= the food item on the ingredient,
-#         #   user= the current user
-#         # )
-#     except IntegrityError:  # Raised if someone tries to add
-#         pass                # the same food twice, just ignore it
-
-#     # Go back to the recipe page with a redirect
-#     # to the name of the registered recipe detail
-#     # path with code like this
-#     # return redirect(
-#     #     name of the registered recipe detail path,
-#     #     pk=id of the ingredient's recipe
-#     # )

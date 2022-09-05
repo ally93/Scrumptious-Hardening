@@ -1,7 +1,16 @@
 {% extends 'paginate.html' %}
 
-  {% block content%}
+{% block content%}
   <main class="recipe-grid">
+    <div class="delete-form">
+        <form method="post" action="{% url 'shoppingitems_delete' %}">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <div>
+            <button class="button">Delete All</button>
+          </div>
+        </form>
+      </div>
     <ul>
     {% for item in shoppingitem_list %}
         <li>{{ item.food_item.name }}</li>
