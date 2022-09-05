@@ -47,7 +47,7 @@ class RecipeDetailView(DetailView):
 class RecipeCreateView(LoginRequiredMixin, CreateView):
     model = Recipe
     template_name = "recipes/new.html"
-    fields = ["name", "description", "image"]
+    fields = ["name", "description", "image", "servings"]
     success_url = reverse_lazy("recipes_list")
 
     def form_valid(self, form):
@@ -58,7 +58,7 @@ class RecipeCreateView(LoginRequiredMixin, CreateView):
 class RecipeUpdateView(LoginRequiredMixin, UpdateView):
     model = Recipe
     template_name = "recipes/edit.html"
-    fields = ["name", "author", "description", "image"]
+    fields = ["name", "author", "description", "image", "servings"]
     success_url = reverse_lazy("recipes_list")
 
 

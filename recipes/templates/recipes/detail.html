@@ -9,6 +9,13 @@
   {% endif %}
   <h1>{{ recipe.name }}</h1>
   <h2>by: {{ recipe.author | default_if_none:"Unknown"}}</h2>
+  {% if recipe.servings %}
+  <p>Serves {{recipe.servings}}</p>
+  <form method="GET">
+    <input placeholder="number of servings" type="number" name="servings" required>
+    <button>Resize</button>
+  </form>
+  {% endif %}
   <p>Created on {{ recipe.created }} | Updated on {{ recipe.updated }}</p>
   <form method="post" action="{% url 'recipe_rating' recipe.id %}">
     {% csrf_token %}
