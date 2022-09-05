@@ -1,0 +1,11 @@
+{% extends 'paginate.html' %}
+
+  {% block content%}
+  <main class="recipe-grid">
+    <ul>
+    {% for item in shoppingitem_list %}
+        <li>{{ item.food_item.name }}</li>
+    {% endfor %}
+    </ul>
+  </main>
+{% endblock content %}

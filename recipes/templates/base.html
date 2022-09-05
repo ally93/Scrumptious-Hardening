@@ -26,6 +26,9 @@
           <li>
             <a href="{% url 'meal_plan_list' %}">Meal Plans</a>
           </li>
+          <li>
+            <a href="{% url 'shoppingitems_list' %}">Shopping List</a>
+          </li>
           {% if user.is_staff %}
             <li>
               <a href="{% url 'admin:index' %}">Admin</a>
