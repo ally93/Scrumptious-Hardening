@@ -1,4 +1,5 @@
-{% extends 'base.html' %} {% load markdownify %} {% block content %}
+{% extends 'base.html' %} {% load markdownify %} {% block content %} 
+{% load resizer %}
 <main class="recipe-detail">
   <div>
     <a href="{% url 'recipe_edit' recipe.id %}">Edit</a>
@@ -10,9 +11,14 @@
   <h1>{{ recipe.name }}</h1>
   <h2>by: {{ recipe.author | default_if_none:"Unknown"}}</h2>
   {% if recipe.servings %}
-  <p>Serves {{recipe.servings}}</p>
+  <p>Serves {{servings}}</p>
   <form method="GET">
-    <input placeholder="number of servings" type="number" name="servings" required>
+    <input
+      placeholder="number of servings"
+      type="number"
+      name="servings"
+      required
+    />
     <button>Resize</button>
   </form>
   {% endif %}
@@ -37,7 +43,7 @@
     <tbody>
       {% for ingredient in recipe.ingredients.all %}
       <tr>
-        <td>{{ ingredient.amount }}</td>
+        <td>{{ ingredient.amount|resize_to:servings }}</td>
         <td>{{ ingredient.measure.name }}</td>
         <td>{{ ingredient.food.name }}</td>
         <td>

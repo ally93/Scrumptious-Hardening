@@ -40,6 +40,9 @@ class RecipeDetailView(DetailView):
         shopping_list = []
         for item in self.request.user.shoppingitems.all():
             shopping_list.append(item.food_item)
+
+        context["servings"] = self.request.GET.get("servings")
+
         context["fooditems"] = shopping_list
         return context
 
